@@ -1,5 +1,8 @@
 {
   "name": "exegesis",
+  "displayName": "Exegesis",
+  "description": "Analisis de pasajes biblicos.",
+  "example": "Juan 3:16",
   "contexts": ["hermeneutics"],
   "skills": ["exegesis"]
 }

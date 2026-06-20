@@ -1,5 +1,8 @@
 {
   "name": "theology",
+  "displayName": "Teologia",
+  "description": "Preguntas doctrinales o de fe cristiana.",
+  "example": "Que es la gracia?",
   "contexts": ["hermeneutics", "doctrine"],
   "skills": ["theology"]
 }

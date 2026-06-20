@@ -34,6 +34,19 @@ export async function listWorkflows() {
   return [...workflows.keys()].sort();
 }
 
+export async function listWorkflowOptions() {
+  const workflows = await loadWorkflowCache();
+
+  return [...workflows.entries()]
+    .map(([name, workflow]) => ({
+      name,
+      displayName: workflow.displayName || name,
+      description: workflow.description || '',
+      example: workflow.example || '',
+    }))
+    .sort((current, next) => current.name.localeCompare(next.name));
+}
+
 export async function load(workflowName) {
   const workflows = await loadWorkflowCache();
   const workflow = workflows.get(workflowName);
@@ -59,6 +72,7 @@ export function clearWorkflowCache() {
 
 export default {
   listWorkflows,
+  listWorkflowOptions,
   load,
   ensureWorkflowExists,
   clearWorkflowCache,
