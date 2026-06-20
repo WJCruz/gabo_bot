@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: gabo-bot
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run api
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: DEFAULT_WORKFLOW
+        value: theology
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_WEBHOOK_SECRET
+        sync: false
+      - key: API_KEY
+        sync: false
