@@ -27,6 +27,7 @@ ${question}
 
 Follow the provided contexts and skills.
 Respond clearly and structurally.
+Respond in Spanish unless the user explicitly asks for another language.
 `;
   }
 }
