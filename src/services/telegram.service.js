@@ -15,6 +15,45 @@ function splitTelegramMessage(text) {
   return chunks;
 }
 
+function escapeHtml(text) {
+  return text
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function formatInlineMarkdown(text) {
+  const parts = text.split('**');
+
+  return parts
+    .map((part, index) => {
+      const escaped = escapeHtml(part);
+
+      return index % 2 === 1 ? `<b>${escaped}</b>` : escaped;
+    })
+    .join('');
+}
+
+function formatLineForTelegram(line) {
+  const heading = line.match(/^#{1,6}\s+(.+)$/);
+
+  if (heading) {
+    return `<b>${formatInlineMarkdown(heading[1])}</b>`;
+  }
+
+  const bullet = line.match(/^(\s*)[*-]\s+(.+)$/);
+
+  if (bullet) {
+    return `${bullet[1]}• ${formatInlineMarkdown(bullet[2])}`;
+  }
+
+  return formatInlineMarkdown(line);
+}
+
+function formatTelegramMessage(text) {
+  return text.split('\n').map(formatLineForTelegram).join('\n');
+}
+
 function getWorkflowOption(workflowOptions, workflowName) {
   return workflowOptions.find((workflow) => workflow.name === workflowName);
 }
@@ -71,7 +110,8 @@ async function sendTelegramMessage(chatId, text, options = {}) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: chunk,
+        text: formatTelegramMessage(chunk),
+        parse_mode: 'HTML',
         ...options,
       }),
     });
